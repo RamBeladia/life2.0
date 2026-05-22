@@ -17,6 +17,21 @@
   --card-bg: rgba(255,255,255,0.04);
   --card-radius: 16px;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  /* supplement tracker variables */
+  --bg-card: rgba(255,255,255,0.04);
+  --bg-secondary: rgba(255,255,255,0.035);
+  --bg-input: rgba(0,0,0,0.28);
+  --bg-input-focus: rgba(0,0,0,0.36);
+  --bg-dropdown: rgba(15,15,18,0.96);
+  --border-soft: rgba(255,255,255,0.04);
+  --border-strong: rgba(255,255,255,0.12);
+  --text-quaternary: #4D4B47;
+  --accent: #1D9E75;
+  --accent-glow: rgba(29,158,117,0.35);
+  --stack-warning: #FF8A4D;
+  --stack-warning-bg: rgba(163,45,45,0.10);
+  --tag-stack: #D8AB30;
+  --tag-stack-bg: rgba(216,171,48,0.15);
 }
 
 html { min-height: 100%; }
@@ -69,6 +84,76 @@ body::after {
   z-index: 1;
   max-width: 1100px;
   margin: 0 auto;
+}
+
+/* ── Tab Navigation ── */
+.tab-nav {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 22px;
+  background: rgba(0,0,0,0.22);
+  border-radius: 13px;
+  padding: 4px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.tab-btn {
+  flex: 1;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-tertiary);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+.tab-btn:hover {
+  color: var(--text-secondary);
+  background: rgba(255,255,255,0.04);
+}
+.tab-btn.active {
+  background: rgba(255,255,255,0.09);
+  color: var(--text-primary);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+
+/* ── Tab Panels ── */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── Placeholder Panels ── */
+.placeholder-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  backdrop-filter: blur(24px) saturate(1.2);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+  gap: 10px;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+.placeholder-icon { font-size: 48px; opacity: 0.35; line-height: 1; }
+.placeholder-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  opacity: 0.4;
+  letter-spacing: -0.02em;
+}
+.placeholder-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
 }
 
 /* ── Page Title ── */
@@ -829,133 +914,596 @@ body::after {
 .goal-row.drag-over-top    { border-top: 2px solid rgba(255,255,255,0.4); }
 .goal-row.drag-over-bottom { border-bottom: 2px solid rgba(255,255,255,0.4); }
 
+/* ── Supplement Tracker ── */
+.supp-inner-wrap {
+  max-width: 720px;
+  padding-bottom: 40px;
+}
+
+.stack-page-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin: 0 4px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.stack-page-label::before { content: '≡'; font-size: 14px; opacity: 0.5; }
+
+.stack-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 22px 22px 18px;
+  backdrop-filter: blur(24px) saturate(1.2);
+  -webkit-backdrop-filter: blur(24px) saturate(1.2);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+}
+
+.stack-head { margin-bottom: 12px; }
+.sf-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 6px;
+}
+.sf-title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  color: var(--text-primary);
+  line-height: 1.15;
+  margin-bottom: 2px;
+}
+.stack-progress-text {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+  margin-top: 6px;
+}
+.stack-progress-track {
+  height: 5px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 14px 0 18px;
+}
+.stack-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #FFFFFF;
+  border-radius: 999px;
+  transition: width 0.5s cubic-bezier(0.22,1,0.36,1);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+}
+
+.stack-window { margin-bottom: 14px; }
+.stack-window-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.stack-window-icon { font-size: 16px; }
+.stack-window-title { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+.stack-window-time { font-size: 11px; color: var(--text-tertiary); font-weight: 500; }
+
+.stack-item {
+  display: grid;
+  grid-template-columns: 32px 1fr auto auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--bg-secondary);
+  margin-bottom: 6px;
+  border: 1px solid transparent;
+  transition: background 0.2s, border-color 0.2s;
+}
+.stack-item:hover { background: rgba(255,255,255,0.05); }
+.stack-item.taken { background: rgba(29,158,117,0.08); }
+.stack-item.taken .stack-item-name { text-decoration: line-through; color: var(--text-tertiary); }
+
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.4); }
+  50%       { box-shadow: 0 0 0 8px rgba(239,68,68,0); }
+}
+.stack-item.missed {
+  border: 1px solid rgba(239,68,68,0.45);
+  animation: pulse-red 1.5s ease-in-out infinite;
+}
+.stack-item.missed .stack-check { border-color: rgba(239,68,68,0.55); }
+.stack-item.taken.missed { animation: none; border-color: transparent; }
+.stack-item.taken.missed .stack-check { border-color: var(--accent); }
+
+.stack-check {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--border-strong);
+  background: var(--bg-card);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: transparent;
+  transition: all 0.2s;
+  flex-shrink: 0; font-family: inherit; padding: 0;
+}
+.stack-check:hover { border-color: var(--accent); }
+.stack-check.checked {
+  background: var(--accent); border-color: var(--accent);
+  color: white;
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.stack-item-body { min-width: 0; }
+.stack-item-name {
+  font-size: 14px; font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+  display: inline-flex; align-items: center;
+  gap: 8px; flex-wrap: wrap;
+  outline: none;
+}
+.stack-item-name[contenteditable="true"] {
+  outline: 1px solid rgba(255,255,255,0.25);
+  outline-offset: 4px; border-radius: 4px;
+}
+.stack-item-meta {
+  font-size: 11px; color: var(--text-tertiary);
+  margin-top: 2px; outline: none; cursor: text;
+}
+.stack-item-meta[contenteditable="true"] {
+  outline: 1px solid rgba(255,255,255,0.2);
+  outline-offset: 4px; border-radius: 4px;
+  color: var(--text-secondary);
+}
+.stack-item-meta:empty::before {
+  content: 'add notes…';
+  color: var(--text-quaternary);
+  font-style: italic;
+}
+
+.stack-item-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 2px 7px; border-radius: 99px;
+  font-weight: 600; letter-spacing: 0.04em;
+  text-transform: lowercase;
+}
+.stack-item-tag.tag-stack { background: var(--tag-stack-bg); color: var(--tag-stack); }
+.stack-item-tag.tag-not-ordered { background: var(--stack-warning-bg); color: var(--text-tertiary); }
+
+.stack-low-btn {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--text-tertiary);
+  font-size: 10px;
+  padding: 5px 9px; border-radius: 6px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-weight: 600; letter-spacing: 0.04em;
+  white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 4px;
+  transition: all 0.15s;
+}
+.stack-low-btn:hover { border-color: rgba(163,45,45,0.4); color: var(--stack-warning); }
+.stack-low-btn.is-low {
+  background: var(--stack-warning-bg);
+  border-color: rgba(163,45,45,0.4);
+  color: var(--stack-warning);
+}
+
+.stack-item-del {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px 10px; border-radius: 6px;
+  opacity: 0.7;
+  transition: opacity 0.15s, color 0.15s, border-color 0.15s, background 0.15s;
+  font-family: inherit;
+  line-height: 1;
+  min-width: 28px; min-height: 28px;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.stack-item:hover .stack-item-del { opacity: 1; }
+.stack-item-del:hover, .stack-item-del:active {
+  color: #FF6B6B;
+  border-color: rgba(239,68,68,0.45);
+  background: rgba(239,68,68,0.08);
+  opacity: 1;
+}
+
+.stack-window-empty {
+  font-size: 12px;
+  color: var(--text-quaternary);
+  font-style: italic;
+  padding: 8px 12px;
+}
+
+.stack-ticker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  background: rgba(0,0,0,0.28);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 10px;
+  font-size: 12px;
+  min-height: 36px;
+}
+.stack-ticker-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #6BE3A4;
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+.stack-ticker.status-low .stack-ticker-dot { background: #FF8A4D; }
+.stack-ticker.status-missed .stack-ticker-dot {
+  background: #FF6B6B;
+  animation: stack-ticker-pulse 1.5s ease-in-out infinite;
+}
+@keyframes stack-ticker-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.5); }
+  50%       { box-shadow: 0 0 0 5px rgba(239,68,68,0); }
+}
+.stack-ticker-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+.stack-ticker-sep { color: var(--text-quaternary); flex-shrink: 0; }
+.stack-ticker-msg {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity 0.28s;
+}
+.stack-ticker-msg.is-fading { opacity: 0; }
+.stack-ticker-count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.stack-add-wrap {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-soft);
+}
+.stack-add-label { margin-bottom: 10px; }
+.stack-add-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 110px 90px;
+  gap: 6px;
+  align-items: center;
+}
+.stack-input {
+  font-size: 13px;
+  padding: 9px 11px;
+  border-radius: 10px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font-family: inherit;
+  transition: border-color 0.18s, background 0.18s;
+}
+.stack-input::placeholder { color: var(--text-tertiary); }
+.stack-input:focus {
+  outline: none;
+  border-color: rgba(255,255,255,0.40);
+  background: var(--bg-input-focus);
+}
+.stack-select { cursor: pointer; }
+.stack-add-btn {
+  font-size: 13px;
+  padding: 9px 11px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.85);
+  background: linear-gradient(180deg, #FFFFFF 0%, #E8E5DD 100%);
+  color: #0A0A0B;
+  font-weight: 700;
+  letter-spacing: 0.005em;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.12s, box-shadow 0.18s, background 0.18s;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 4px 14px rgba(0,0,0,0.30);
+}
+.stack-add-btn:hover {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F2F0EA 100%);
+  transform: translateY(-1px);
+}
+.stack-add-btn:active { transform: translateY(0) scale(0.97); }
+
+.stack-name-wrap { position: relative; }
+.stack-search-results {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: max(100%, 320px);
+  background: var(--bg-dropdown);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  max-height: 280px;
+  overflow-y: auto;
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.65);
+  z-index: 50;
+  padding: 6px;
+}
+.stack-search-results[hidden] { display: none; }
+.stack-result {
+  display: flex;
+  gap: 12px; align-items: center;
+  width: 100%;
+  padding: 9px 11px;
+  background: transparent; border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  color: var(--text-secondary);
+  transition: background 0.12s;
+}
+.stack-result:hover, .stack-result.is-focused { background: rgba(255,255,255,0.06); }
+.stack-result-icon { font-size: 17px; flex-shrink: 0; width: 24px; text-align: center; }
+.stack-result-body { min-width: 0; flex: 1; }
+.stack-result-name { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.2; }
+.stack-result-meta { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+
+.supp-attribution {
+  text-align: center; margin-top: 28px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-quaternary);
+}
+
 /* ── Responsive ── */
 @media (max-width: 480px) {
   .dash-title { font-size: 22px; }
-
   .goal-ticker { padding: 9px 12px; }
   .goal-ticker-label { font-size: 9px; letter-spacing: 0.14em; }
   .goal-ticker-row { font-size: 12px; }
   .goal-ticker-meta { font-size: 10px; padding: 2px 7px; }
-
   .ring-svg-wrap { width: 144px; height: 144px; }
   .ring-percent { font-size: 32px; }
   .ring-status { font-size: 13px; }
+  .tab-btn { font-size: 12px; padding: 7px 6px; }
 }
+
+@media (max-width: 600px) {
+  .stack-card { padding: 18px 16px 14px; }
+  .stack-item { grid-template-columns: 28px 1fr auto; gap: 8px; }
+  .stack-item .stack-low-btn { grid-column: 2 / 4; margin-top: 4px; justify-self: start; }
+  .stack-add-row { grid-template-columns: 1fr 1fr; }
+  .stack-add-row .stack-add-btn { grid-column: 1 / -1; }
+  .stack-add-row .stack-select { grid-column: 1 / -1; }
+  .stack-search-results { width: 100%; }
+}
+
+::selection { background: rgba(224,118,88,0.3); color: var(--text-primary); }
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
 </style>
 </head>
 <body>
 <div class="page-wrap">
 
-  <!-- ── Page Title ── -->
-  <h1 class="dash-title">My Dashboard</h1>
+  <!-- ── Tab Navigation ── -->
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="goals">Goals</button>
+    <button class="tab-btn" data-tab="supplements">Supplements</button>
+    <button class="tab-btn" data-tab="gym">Gym</button>
+    <button class="tab-btn" data-tab="portfolio">Portfolio</button>
+  </nav>
 
-  <!-- ── Goal Ticker ── -->
-  <div class="ticker-row">
-    <div class="goal-ticker" id="goalTicker" aria-live="polite" aria-atomic="true">
-      <div class="goal-ticker-led"><span class="goal-ticker-led-dot"></span></div>
-      <div class="goal-ticker-label">GOALS</div>
-      <div class="goal-ticker-stage" id="goalTickerStage">
-        <div class="goal-ticker-row">
-          <span class="goal-ticker-status" data-status="">—</span>
-          <span class="goal-ticker-text">Loading…</span>
-        </div>
-      </div>
-      <div class="goal-ticker-meta" id="goalTickerMeta">0/0</div>
-    </div>
-  </div>
+  <!-- ── Goals Tab ── -->
+  <div class="tab-panel active" id="tab-goals">
 
-  <!-- ── Day Ring ── -->
-  <div class="day-ring-card">
-    <div class="ring-svg-wrap">
-      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <filter id="ringGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur"/>
-            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-        </defs>
-        <circle id="ringTrack" cx="60" cy="60" r="52"
-          fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"/>
-        <circle id="ringFill" cx="60" cy="60" r="52"
-          fill="none" stroke-width="8" stroke-linecap="round"
-          filter="url(#ringGlow)"
-          transform="rotate(-90 60 60)"
-          style="transition: stroke-dashoffset 0.7s cubic-bezier(0.22,1,0.36,1), stroke 0.7s cubic-bezier(0.22,1,0.36,1);"/>
-      </svg>
-      <div class="ring-overlay">
-        <div class="ring-percent" id="ringPercent">—</div>
-        <div class="ring-phase"   id="ringPhase">LOADING</div>
-        <div class="ring-clock"   id="ringClock">—</div>
-      </div>
-    </div>
-    <div class="ring-info">
-      <div class="ring-status"    id="ringStatus">—</div>
-      <div class="ring-remaining" id="ringRemaining">—</div>
-      <div class="ring-hours">8:00 AM – 12:00 AM</div>
-    </div>
-  </div>
+    <!-- ── Page Title ── -->
+    <h1 class="dash-title">My Dashboard</h1>
 
-  <!-- ── To Do List ── -->
-  <div class="section">
-    <div class="section-title">To Do List</div>
-
-    <!-- TODAY card -->
-    <div class="gm-card" id="todayCard">
-      <div class="gm-card-header">
-        <div class="gm-card-header-left">
-          <div class="gm-eyebrow" id="todayLabel">Today</div>
-          <div class="gm-progress-row">
-            <div class="gm-progress-num" id="gmProgressNum">0</div>
-            <div class="gm-progress-total" id="gmProgressTotal">/ 0</div>
-            <div class="gm-progress-label" id="gmProgressLabel">no goals yet</div>
+    <!-- ── Goal Ticker ── -->
+    <div class="ticker-row">
+      <div class="goal-ticker" id="goalTicker" aria-live="polite" aria-atomic="true">
+        <div class="goal-ticker-led"><span class="goal-ticker-led-dot"></span></div>
+        <div class="goal-ticker-label">GOALS</div>
+        <div class="goal-ticker-stage" id="goalTickerStage">
+          <div class="goal-ticker-row">
+            <span class="goal-ticker-status" data-status="">—</span>
+            <span class="goal-ticker-text">Loading…</span>
           </div>
         </div>
-        <div class="gm-streak" id="gmStreak">
-          <span class="gm-streak-icon">⚡</span>
-          <span class="gm-streak-num" id="gmStreakNum">0</span>
-          <span class="gm-streak-label">day streak</span>
+        <div class="goal-ticker-meta" id="goalTickerMeta">0/0</div>
+      </div>
+    </div>
+
+    <!-- ── Day Ring ── -->
+    <div class="day-ring-card">
+      <div class="ring-svg-wrap">
+        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="ringGlow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <circle id="ringTrack" cx="60" cy="60" r="52"
+            fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"/>
+          <circle id="ringFill" cx="60" cy="60" r="52"
+            fill="none" stroke-width="8" stroke-linecap="round"
+            filter="url(#ringGlow)"
+            transform="rotate(-90 60 60)"
+            style="transition: stroke-dashoffset 0.7s cubic-bezier(0.22,1,0.36,1), stroke 0.7s cubic-bezier(0.22,1,0.36,1);"/>
+        </svg>
+        <div class="ring-overlay">
+          <div class="ring-percent" id="ringPercent">—</div>
+          <div class="ring-phase"   id="ringPhase">LOADING</div>
+          <div class="ring-clock"   id="ringClock">—</div>
+        </div>
+      </div>
+      <div class="ring-info">
+        <div class="ring-status"    id="ringStatus">—</div>
+        <div class="ring-remaining" id="ringRemaining">—</div>
+        <div class="ring-hours">8:00 AM – 12:00 AM</div>
+      </div>
+    </div>
+
+    <!-- ── To Do List ── -->
+    <div class="section">
+      <div class="section-title">To Do List</div>
+
+      <!-- TODAY card -->
+      <div class="gm-card" id="todayCard">
+        <div class="gm-card-header">
+          <div class="gm-card-header-left">
+            <div class="gm-eyebrow" id="todayLabel">Today</div>
+            <div class="gm-progress-row">
+              <div class="gm-progress-num" id="gmProgressNum">0</div>
+              <div class="gm-progress-total" id="gmProgressTotal">/ 0</div>
+              <div class="gm-progress-label" id="gmProgressLabel">no goals yet</div>
+            </div>
+          </div>
+          <div class="gm-streak" id="gmStreak">
+            <span class="gm-streak-icon">⚡</span>
+            <span class="gm-streak-num" id="gmStreakNum">0</span>
+            <span class="gm-streak-label">day streak</span>
+          </div>
+        </div>
+
+        <div class="gm-bar" id="gmBar"></div>
+
+        <ul class="goal-list gm-list" id="goalList"></ul>
+        <div id="emptyState" class="empty-state">No goals for today yet — add one below.</div>
+
+        <button class="gm-push-btn" id="gmPushBtn">→ Push remaining to tomorrow</button>
+
+        <div class="goal-input-wrap gm-input-wrap">
+          <input class="goal-input" id="goalInput" type="text" placeholder="Add a goal for today…" autocomplete="off"/>
+          <button class="goal-add-btn"    id="goalAddBtn">+ Add</button>
+          <button class="goal-polish-btn" id="goalPolishBtn">✨ Polish</button>
+        </div>
+        <div class="polish-status" id="polishStatus"></div>
+      </div>
+
+      <!-- PLAN TOMORROW card -->
+      <div class="gm-card gm-card-tomorrow" id="tomorrowCard">
+        <div class="gm-card-header">
+          <div class="gm-card-header-left">
+            <div class="gm-eyebrow" id="tomorrowLabel">Plan tomorrow</div>
+            <div class="gm-tomorrow-sub">Write tonight, locked until 6 AM.</div>
+          </div>
+          <div class="gm-tomorrow-count" id="gmTomorrowCount">0 planned</div>
+        </div>
+
+        <ul class="goal-list gm-list" id="tomorrowList"></ul>
+        <div id="tomorrowEmptyState" class="empty-state">Nothing planned for tomorrow yet.</div>
+
+        <div class="goal-input-wrap gm-input-wrap">
+          <input class="goal-input" id="tomorrowInput" type="text" placeholder="Plan a goal for tomorrow…" autocomplete="off"/>
+          <button class="goal-add-btn"    id="tomorrowAddBtn">+ Add</button>
+          <button class="goal-polish-btn" id="tomorrowPolishBtn">✨ Polish</button>
+        </div>
+        <div class="polish-status" id="tomorrowStatus"></div>
+      </div>
+
+    </div>
+  </div><!-- end #tab-goals -->
+
+  <!-- ── Supplements Tab ── -->
+  <div class="tab-panel" id="tab-supplements">
+    <div class="supp-inner-wrap">
+      <div class="stack-page-label">Daily Stack</div>
+
+      <div class="stack-card">
+        <div class="stack-ticker" id="stackTicker">
+          <span class="stack-ticker-dot"></span>
+          <span class="stack-ticker-label">STACK</span>
+          <span class="stack-ticker-sep">·</span>
+          <span class="stack-ticker-msg" id="stackTickerMsg">All caught up — keep it rolling</span>
+          <span class="stack-ticker-count" id="stackTickerCount">0/0</span>
+        </div>
+
+        <div class="stack-head">
+          <div class="sf-eyebrow">Daily stack</div>
+          <div class="sf-title">Tap each as you take it</div>
+          <div class="stack-progress-text" id="stackProgressText">— / — taken today · resets at 6 AM</div>
+        </div>
+
+        <div class="stack-progress-track">
+          <div id="stackProgressBar" class="stack-progress-fill"></div>
+        </div>
+
+        <div id="stackGroups"></div>
+
+        <div class="stack-add-wrap">
+          <div class="sf-eyebrow stack-add-label">Add to stack</div>
+          <div class="stack-add-row">
+            <div class="stack-name-wrap">
+              <input id="stackAddName" type="text" placeholder="Name (e.g. B-complex)" class="stack-input" autocomplete="off" spellcheck="false" />
+              <div id="stackSearchResults" class="stack-search-results" hidden></div>
+            </div>
+            <input id="stackAddDose" type="text" placeholder="Dose (e.g. 1 cap)" class="stack-input" />
+            <select id="stackAddWindow" class="stack-input stack-select">
+              <option value="morning">Morning</option>
+              <option value="lunch">Lunch</option>
+              <option value="evening">Evening</option>
+              <option value="anytime">Anytime</option>
+            </select>
+            <button id="stackAddBtn" class="stack-add-btn">+ Add</button>
+          </div>
         </div>
       </div>
 
-      <div class="gm-bar" id="gmBar"></div>
-
-      <ul class="goal-list gm-list" id="goalList"></ul>
-      <div id="emptyState" class="empty-state">No goals for today yet — add one below.</div>
-
-      <button class="gm-push-btn" id="gmPushBtn">→ Push remaining to tomorrow</button>
-
-      <div class="goal-input-wrap gm-input-wrap">
-        <input class="goal-input" id="goalInput" type="text" placeholder="Add a goal for today…" autocomplete="off"/>
-        <button class="goal-add-btn"    id="goalAddBtn">+ Add</button>
-        <button class="goal-polish-btn" id="goalPolishBtn">✨ Polish</button>
-      </div>
-      <div class="polish-status" id="polishStatus"></div>
+      <div class="supp-attribution">// all data stays in your browser</div>
     </div>
+  </div><!-- end #tab-supplements -->
 
-    <!-- PLAN TOMORROW card -->
-    <div class="gm-card gm-card-tomorrow" id="tomorrowCard">
-      <div class="gm-card-header">
-        <div class="gm-card-header-left">
-          <div class="gm-eyebrow" id="tomorrowLabel">Plan tomorrow</div>
-          <div class="gm-tomorrow-sub">Write tonight, locked until 6 AM.</div>
-        </div>
-        <div class="gm-tomorrow-count" id="gmTomorrowCount">0 planned</div>
-      </div>
-
-      <ul class="goal-list gm-list" id="tomorrowList"></ul>
-      <div id="tomorrowEmptyState" class="empty-state">Nothing planned for tomorrow yet.</div>
-
-      <div class="goal-input-wrap gm-input-wrap">
-        <input class="goal-input" id="tomorrowInput" type="text" placeholder="Plan a goal for tomorrow…" autocomplete="off"/>
-        <button class="goal-add-btn"    id="tomorrowAddBtn">+ Add</button>
-        <button class="goal-polish-btn" id="tomorrowPolishBtn">✨ Polish</button>
-      </div>
-      <div class="polish-status" id="tomorrowStatus"></div>
+  <!-- ── Gym Tab ── -->
+  <div class="tab-panel" id="tab-gym">
+    <div class="placeholder-panel">
+      <div class="placeholder-icon">🏋️</div>
+      <div class="placeholder-title">Gym</div>
+      <div class="placeholder-sub">Coming soon</div>
     </div>
-
   </div>
-</div>
+
+  <!-- ── Portfolio Tab ── -->
+  <div class="tab-panel" id="tab-portfolio">
+    <div class="placeholder-panel">
+      <div class="placeholder-icon">📈</div>
+      <div class="placeholder-title">Portfolio</div>
+      <div class="placeholder-sub">Coming soon</div>
+    </div>
+  </div>
+
+</div><!-- end .page-wrap -->
 
 <script>
 'use strict';
@@ -1624,6 +2172,475 @@ renderStreak();
 updateDayBar();
 setInterval(updateDayBar, 60 * 1000);
 startTicker();
+
+/* ── Tab switching ── */
+(function () {
+  const btns   = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+
+  function activateTab(tabId) {
+    btns.forEach(b => b.classList.toggle('active', b.dataset.tab === tabId));
+    panels.forEach(p => p.classList.toggle('active', p.id === 'tab-' + tabId));
+    try { localStorage.setItem('active-tab', tabId); } catch {}
+  }
+
+  const saved = localStorage.getItem('active-tab');
+  if (saved && document.getElementById('tab-' + saved)) activateTab(saved);
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => activateTab(btn.dataset.tab));
+  });
+})();
+</script>
+
+<script>
+/* ── Supplement Tracker ── */
+(() => {
+  'use strict';
+
+  const storeGet = (k) => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } };
+  const storeSet = (k, v) => localStorage.setItem(k, JSON.stringify(v));
+
+  function getActiveDate() {
+    const now = new Date();
+    if (now.getHours() < 6) now.setDate(now.getDate() - 1);
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const d = String(now.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+
+  const TEMPLATE_VERSION = 6;
+
+  const STACK_DEFAULTS = [
+    { id: 'creatine', name: 'Creatine monohydrate', dose: '5g',     window: 'anytime', note: 'Daily — consistency matters', tag: null, ordered: true },
+    { id: 'biotin',   name: 'Biotin',               dose: '5mg',    window: 'morning', note: 'Hair, skin, nails',           tag: null, ordered: true },
+    { id: 'zinc',     name: 'Zinc',                 dose: '30mg',   window: 'evening', note: 'Before bed',                  tag: null, ordered: true },
+    { id: 'whey',     name: 'Whey protein',         dose: '25–40g', window: 'anytime', note: 'After workouts or heavy activity', tag: null, ordered: true },
+  ];
+
+  const STACK_WINDOWS = [
+    { key: 'morning', icon: '🌅', title: 'Morning', time: '7–10 AM',         cutoffHour: 10   },
+    { key: 'lunch',   icon: '🍽️', title: 'Lunch',   time: '12–2 PM',         cutoffHour: 14   },
+    { key: 'evening', icon: '🌙', title: 'Evening', time: '9–11 PM',          cutoffHour: 23   },
+    { key: 'anytime', icon: '⏱️', title: 'Anytime', time: 'No fixed window',  cutoffHour: null },
+  ];
+
+  const SUPPLEMENT_DB = [
+    { name: 'Creatine monohydrate', dose: '5g',     window: 'anytime', note: 'Daily — consistency matters',      icon: '🏋️', aliases: ['creatine'] },
+    { name: 'Biotin',               dose: '5mg',    window: 'morning', note: 'Hair, skin, nails',                icon: '💅', aliases: ['biotin', 'b7'] },
+    { name: 'Zinc',                 dose: '30mg',   window: 'evening', note: 'Before bed',                       icon: '💊', aliases: ['zinc'] },
+    { name: 'Whey protein',         dose: '25–40g', window: 'anytime', note: 'After workouts or heavy activity', icon: '🥤', aliases: ['whey'] },
+  ];
+
+  let todayKey = `stack:taken:${getActiveDate()}`;
+
+  function getItems() {
+    const storedVersion = storeGet('stack:version');
+    const stored = storeGet('stack:items');
+    if (!stored || !Array.isArray(stored) || !stored.length || storedVersion !== TEMPLATE_VERSION) {
+      const fresh = JSON.parse(JSON.stringify(STACK_DEFAULTS));
+      storeSet('stack:items', fresh);
+      storeSet('stack:version', TEMPLATE_VERSION);
+      return fresh;
+    }
+    return stored;
+  }
+  function setItems(items) { storeSet('stack:items', items); }
+  function getTaken() { return storeGet(todayKey) || {}; }
+  function setTaken(map) { storeSet(todayKey, map); }
+  function getLow() { return storeGet('stack:low') || []; }
+  function setLow(arr) { storeSet('stack:low', arr); }
+
+  function toggleTaken(id) {
+    const taken = getTaken();
+    if (taken[id]) delete taken[id]; else taken[id] = Date.now();
+    setTaken(taken); render();
+  }
+  function toggleLow(id) {
+    const low = getLow();
+    if (low.includes(id)) setLow(low.filter(x => x !== id));
+    else { low.push(id); setLow(low); }
+    render();
+  }
+  function deleteItem(id) {
+    setItems(getItems().filter(i => i.id !== id));
+    const taken = getTaken();
+    delete taken[id];
+    setTaken(taken);
+    setLow(getLow().filter(x => x !== id));
+    render();
+  }
+  function addItem(name, dose, windowKey, note) {
+    note = note || '';
+    const v = String(name || '').trim();
+    if (!v) return;
+    const items = getItems();
+    const id = 'custom_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+    items.push({
+      id, name: v,
+      dose: String(dose || '').trim(),
+      window: ['morning','lunch','evening','anytime'].includes(windowKey) ? windowKey : 'anytime',
+      note: String(note).trim(),
+      tag: null, ordered: true
+    });
+    setItems(items);
+    render();
+  }
+  function updateItem(id, field, value) {
+    const items = getItems();
+    const item = items.find(i => i.id === id);
+    if (!item) return;
+    item[field] = value;
+    setItems(items);
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, function(c) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function metaText(item) {
+    const parts = [];
+    if (item.dose) parts.push(item.dose);
+    if (item.note) parts.push(item.note);
+    return parts.join(' · ');
+  }
+
+  function render() {
+    const items = getItems();
+    const taken = getTaken();
+    const low   = getLow();
+    const totalCount = items.length;
+    const takenCount = items.filter(i => taken[i.id]).length;
+
+    document.getElementById('stackProgressText').textContent =
+      takenCount + ' / ' + totalCount + ' taken today · resets at 6 AM';
+    const pct = totalCount === 0 ? 0 : (takenCount / totalCount) * 100;
+    document.getElementById('stackProgressBar').style.width = pct + '%';
+
+    const groupsEl = document.getElementById('stackGroups');
+    groupsEl.innerHTML = '';
+
+    const now = new Date();
+    const nowHour = now.getHours() + (now.getMinutes() / 60);
+
+    STACK_WINDOWS.forEach(function(win) {
+      const winItems = items.filter(i => (i.window || 'anytime') === win.key);
+      if (winItems.length === 0) return;
+
+      const group = document.createElement('div');
+      group.className = 'stack-window';
+      group.innerHTML =
+        '<div class="stack-window-header">' +
+          '<span class="stack-window-icon">' + win.icon + '</span>' +
+          '<span class="stack-window-title">' + win.title + '</span>' +
+          '<span class="stack-window-time">' + win.time + '</span>' +
+        '</div>';
+
+      const isPastCutoff = win.cutoffHour !== null && nowHour > win.cutoffHour;
+
+      winItems.forEach(function(item) {
+        const isTaken  = !!taken[item.id];
+        const isLow    = low.includes(item.id);
+        const isMissed = !isTaken && isPastCutoff;
+
+        const row = document.createElement('div');
+        row.className = 'stack-item' + (isTaken ? ' taken' : '') + (isMissed ? ' missed' : '');
+
+        let tagHtml = '';
+        if (item.tag === 'stack')       tagHtml = '<span class="stack-item-tag tag-stack">stack</span>';
+        else if (item.tag === 'not-ordered') tagHtml = '<span class="stack-item-tag tag-not-ordered">not ordered</span>';
+
+        row.innerHTML =
+          '<button class="stack-check ' + (isTaken ? 'checked' : '') + '" data-action="toggle" data-id="' + item.id + '" aria-label="Mark taken">' + (isTaken ? '✓' : '') + '</button>' +
+          '<div class="stack-item-body">' +
+            '<div class="stack-item-name" data-edit="name" data-id="' + item.id + '">' +
+              '<span class="stack-item-name-text">' + escapeHtml(item.name) + '</span>' + tagHtml +
+            '</div>' +
+            '<div class="stack-item-meta" data-edit="meta" data-id="' + item.id + '">' + escapeHtml(metaText(item)) + '</div>' +
+          '</div>' +
+          '<button class="stack-low-btn ' + (isLow ? 'is-low' : '') + '" data-action="low" data-id="' + item.id + '">↓ Running low</button>' +
+          '<button class="stack-item-del" data-action="del" data-id="' + item.id + '" aria-label="Delete">×</button>';
+
+        group.appendChild(row);
+      });
+
+      groupsEl.appendChild(group);
+    });
+
+    if (groupsEl.children.length === 0) {
+      groupsEl.innerHTML = '<div class="stack-window-empty">No items yet — add one below to start your stack.</div>';
+    }
+
+    renderTicker();
+  }
+
+  /* ── Stack Ticker ── */
+  var stackTickerIndex    = 0;
+  var stackTickerInterval = null;
+  var cachedIssues        = [];
+
+  function getStackIssues() {
+    const items = getItems();
+    const taken = getTaken();
+    const low   = getLow();
+    const now = new Date();
+    const nowHour = now.getHours() + (now.getMinutes() / 60);
+
+    const missed  = [];
+    const lowList = [];
+
+    items.forEach(function(item) {
+      const win = STACK_WINDOWS.find(w => w.key === (item.window || 'anytime'));
+      const isPastCutoff = win && win.cutoffHour !== null && nowHour > win.cutoffHour;
+      const isTaken = !!taken[item.id];
+      if (isPastCutoff && !isTaken) {
+        missed.push({ type: 'missed', text: item.name + ' — missed ' + win.title.toLowerCase() + ' dose' });
+      }
+      if (low.includes(item.id)) {
+        lowList.push({ type: 'low', text: item.name + ' — running low, reorder soon' });
+      }
+    });
+
+    return missed.concat(lowList);
+  }
+
+  function renderTicker() {
+    const issues   = getStackIssues();
+    const tickerEl = document.getElementById('stackTicker');
+    const msgEl    = document.getElementById('stackTickerMsg');
+    const countEl  = document.getElementById('stackTickerCount');
+    const total    = getItems().length;
+
+    cachedIssues = issues;
+
+    if (issues.length === 0) {
+      msgEl.textContent = 'All caught up — keep it rolling';
+      tickerEl.classList.remove('status-low', 'status-missed');
+      countEl.textContent = '0/' + total;
+      stackTickerIndex = 0;
+      return;
+    }
+
+    const hasMissed = issues.some(i => i.type === 'missed');
+    tickerEl.classList.remove('status-low', 'status-missed');
+    tickerEl.classList.add(hasMissed ? 'status-missed' : 'status-low');
+
+    if (stackTickerIndex >= issues.length) stackTickerIndex = 0;
+    msgEl.textContent  = issues[stackTickerIndex].text;
+    countEl.textContent = issues.length + '/' + total;
+  }
+
+  function cycleTicker() {
+    if (cachedIssues.length <= 1) { renderTicker(); return; }
+    const msgEl = document.getElementById('stackTickerMsg');
+    msgEl.classList.add('is-fading');
+    setTimeout(function() {
+      stackTickerIndex++;
+      renderTicker();
+      msgEl.classList.remove('is-fading');
+    }, 280);
+  }
+
+  function startStackTicker() {
+    if (stackTickerInterval) clearInterval(stackTickerInterval);
+    stackTickerInterval = setInterval(cycleTicker, 5000);
+  }
+
+  /* ── Editing ── */
+  function placeCaretAtEnd(el) {
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    range.collapse(false);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+
+  function startEdit(el) {
+    const id    = el.dataset.id;
+    const field = el.dataset.edit;
+
+    if (field === 'name') {
+      const textSpan = el.querySelector('.stack-item-name-text');
+      if (!textSpan) return;
+      textSpan.setAttribute('contenteditable', 'true');
+      textSpan.style.outline = '1px solid rgba(255,255,255,0.25)';
+      textSpan.style.outlineOffset = '4px';
+      textSpan.style.borderRadius  = '4px';
+      textSpan.focus();
+      placeCaretAtEnd(textSpan);
+      const finish = function(commit) {
+        textSpan.removeAttribute('contenteditable');
+        textSpan.style.outline = '';
+        textSpan.style.outlineOffset = '';
+        if (commit) {
+          const newVal = textSpan.textContent.trim();
+          if (newVal) updateItem(id, 'name', newVal); else render();
+        } else render();
+      };
+      textSpan.addEventListener('blur', function() { finish(true); }, { once: true });
+      textSpan.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter')  { e.preventDefault(); textSpan.blur(); }
+        if (e.key === 'Escape') { textSpan.blur(); render(); }
+      });
+    }
+
+    if (field === 'meta') {
+      el.setAttribute('contenteditable', 'true');
+      el.focus();
+      placeCaretAtEnd(el);
+      const finish = function(commit) {
+        el.removeAttribute('contenteditable');
+        if (commit) {
+          const text  = el.textContent.trim();
+          const parts = text.split(/\s*·\s*/);
+          updateItem(id, 'dose', parts[0] || '');
+          updateItem(id, 'note', parts.slice(1).join(' · '));
+        }
+        render();
+      };
+      el.addEventListener('blur', function() { finish(true); }, { once: true });
+      el.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter')  { e.preventDefault(); el.blur(); }
+        if (e.key === 'Escape') { el.blur(); render(); }
+      });
+    }
+  }
+
+  /* ── Group event delegation ── */
+  const groupsEl = document.getElementById('stackGroups');
+
+  groupsEl.addEventListener('click', function(e) {
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    e.stopPropagation();
+    const id = btn.dataset.id;
+    if      (btn.dataset.action === 'toggle') toggleTaken(id);
+    else if (btn.dataset.action === 'low')    toggleLow(id);
+    else if (btn.dataset.action === 'del')    deleteItem(id);
+  });
+
+  groupsEl.addEventListener('pointerdown', function(e) {
+    const btn = e.target.closest('[data-action="del"]');
+    if (!btn) return;
+    e.preventDefault(); e.stopPropagation();
+    deleteItem(btn.dataset.id);
+  });
+
+  groupsEl.addEventListener('click', function(e) {
+    const editEl = e.target.closest('[data-edit]');
+    if (!editEl) return;
+    if (e.target.closest('[data-action]')) return;
+    if (editEl.getAttribute('contenteditable') === 'true') return;
+    startEdit(editEl);
+  });
+
+  /* ── Add form + autocomplete ── */
+  const nameInput = document.getElementById('stackAddName');
+  const doseInput = document.getElementById('stackAddDose');
+  const winSelect = document.getElementById('stackAddWindow');
+  const addBtn    = document.getElementById('stackAddBtn');
+  const resultsEl = document.getElementById('stackSearchResults');
+
+  var pendingNote = '';
+
+  function searchSupplements(q) {
+    const query = q.toLowerCase().trim();
+    if (!query) return [];
+    const starts   = [];
+    const contains = [];
+    SUPPLEMENT_DB.forEach(function(s) {
+      const nameLC  = s.name.toLowerCase();
+      const aliases = (s.aliases || []).map(a => a.toLowerCase());
+      const all     = [nameLC].concat(aliases);
+      if      (all.some(n => n.startsWith(query))) starts.push(s);
+      else if (all.some(n => n.includes(query)))   contains.push(s);
+    });
+    return starts.concat(contains).slice(0, 6);
+  }
+
+  function renderSearchResults(q) {
+    const matches = searchSupplements(q);
+    if (!q.trim() || matches.length === 0) {
+      resultsEl.hidden = true;
+      resultsEl.innerHTML = '';
+      return;
+    }
+    resultsEl.hidden = false;
+    resultsEl.innerHTML = matches.map(function(s) {
+      const winMeta = STACK_WINDOWS.find(w => w.key === s.window) || STACK_WINDOWS[3];
+      return '<button class="stack-result"' +
+        ' data-name="'   + escapeHtml(s.name)   + '"' +
+        ' data-dose="'   + escapeHtml(s.dose)   + '"' +
+        ' data-window="' + s.window             + '"' +
+        ' data-note="'   + escapeHtml(s.note)   + '">' +
+        '<div class="stack-result-icon">' + (s.icon || '💊') + '</div>' +
+        '<div class="stack-result-body">' +
+          '<div class="stack-result-name">' + escapeHtml(s.name) + '</div>' +
+          '<div class="stack-result-meta">' + escapeHtml(s.dose) + ' · ' + winMeta.icon + ' ' + winMeta.title.toLowerCase() + ' · ' + escapeHtml(s.note) + '</div>' +
+        '</div>' +
+        '</button>';
+    }).join('');
+  }
+
+  nameInput.addEventListener('input', function() {
+    renderSearchResults(nameInput.value);
+    pendingNote = '';
+  });
+  nameInput.addEventListener('focus', function() {
+    if (nameInput.value.trim()) renderSearchResults(nameInput.value);
+  });
+
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.stack-name-wrap')) resultsEl.hidden = true;
+  });
+
+  resultsEl.addEventListener('click', function(e) {
+    const btn = e.target.closest('.stack-result');
+    if (!btn) return;
+    nameInput.value = btn.dataset.name;
+    doseInput.value = btn.dataset.dose;
+    winSelect.value = btn.dataset.window;
+    pendingNote     = btn.dataset.note;
+    resultsEl.hidden = true;
+    addBtn.focus();
+  });
+
+  addBtn.addEventListener('click', function() {
+    addItem(nameInput.value, doseInput.value, winSelect.value, pendingNote);
+    nameInput.value  = '';
+    doseInput.value  = '';
+    pendingNote      = '';
+    resultsEl.hidden = true;
+    nameInput.focus();
+  });
+
+  [nameInput, doseInput].forEach(function(inp) {
+    inp.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        if (!resultsEl.hidden && inp === nameInput) {
+          const first = resultsEl.querySelector('.stack-result');
+          if (first) { e.preventDefault(); first.click(); return; }
+        }
+        addBtn.click();
+      }
+      if (e.key === 'Escape') resultsEl.hidden = true;
+    });
+  });
+
+  /* ── Midnight reset check ── */
+  setInterval(function() {
+    const newKey = 'stack:taken:' + getActiveDate();
+    if (newKey !== todayKey) todayKey = newKey;
+    render();
+  }, 60 * 1000);
+
+  render();
+  startStackTicker();
+})();
 </script>
 </body>
 </html>
